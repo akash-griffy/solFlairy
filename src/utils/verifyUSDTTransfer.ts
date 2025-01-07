@@ -1,3 +1,7 @@
+import dotenv from 'dotenv';
+
+dotenv.config();
+
 export interface TransferDetails {
     description: string;
     tokenTransfers: TokenTransfer[];
