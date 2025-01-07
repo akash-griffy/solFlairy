@@ -29,6 +29,9 @@ export interface TransferDetails {
   export const verifyUSDTTransfer = (
     transferDetails: TransferDetails
   ): ValidationResult => {
+
+    console.log(JSON.stringify(transferDetails))
+
     if (!transferDetails.tokenTransfers || transferDetails.tokenTransfers.length === 0) {
       return { isValid: false };
     }
