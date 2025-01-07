@@ -7,11 +7,17 @@ import { getProvider } from "../utils/getProvider";
 import { getSolanaAddressPredicateAddress } from "../utils/getSolanaAddressPredicate";
 import type { Request,Response } from "express";
 import * as mira from "mira-dex-ts"; // Assuming mira SDK is used
+import { verifyUSDTTransfer } from "../utils/verifyUSDTTransfer";
 
 export const swapFairyHandler = async (req: Request, res: Response) => {
     try {
-        console.log(req.body)
+        console.log("Solana Txn Received ", JSON.stringify(req.body));
       // Step 1: Set Solana Account Address and USDT Amount
+      const ok = verifyUSDTTransfer(req.body)
+      if(!ok){
+        console.log("Invalid solana transaction")
+        return res.status(400).json({"message":"Bad Request"})
+      }
       //following is mock data:
       const solanaAccountAddress = "F7Ec1vwWm5yNVUbEMt5RF2W6JjriogME8MBG8Ckdiobr";
       const usdtAmount = 500000;
