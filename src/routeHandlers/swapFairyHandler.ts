@@ -13,15 +13,16 @@ export const swapFairyHandler = async (req: Request, res: Response) => {
     try {
         console.log("Solana Txn Received ", JSON.stringify(req.body));
       // Step 1: Set Solana Account Address and USDT Amount
-      const ok = verifyUSDTTransfer(req.body)
-      if(!ok){
+      const validationResult = verifyUSDTTransfer(req.body[0])
+      if(!validationResult.isValid){
         console.log("Invalid solana transaction")
         return res.status(400).json({"message":"Bad Request"})
       }
       //following is mock data:
-      const solanaAccountAddress = "F7Ec1vwWm5yNVUbEMt5RF2W6JjriogME8MBG8Ckdiobr";
-      const usdtAmount = 500000;
-      const dummyTxnHash = "txnHash";
+      if(!validationResult.details)return res.status(400).json({"message":"Bad Request"})
+      const solanaAccountAddress = validationResult.details.fromUser;
+      const usdtAmount = validationResult.details.tokenAmount*100000;
+      const dummyTxnHash = validationResult.details.signature;
   
       const usdt = {
         bits: "0xa0265fb5c32f6e8db3197af3c7eb05c48ae373605b8165b6f4a51c5b0ba4812e",
