@@ -11,7 +11,6 @@ import { verifyUSDTTransfer } from "../utils/verifyUSDTTransfer";
 
 export const swapFairyHandler = async (req: Request, res: Response) => {
     try {
-        console.log("Solana Txn Received ", JSON.stringify(req.body));
       // Step 1: Set Solana Account Address and USDT Amount
       const validationResult = verifyUSDTTransfer(req.body[0])
       if(!validationResult.isValid){
