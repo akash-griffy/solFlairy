@@ -7,7 +7,6 @@ import { swapFairyHandler } from "./src/routeHandlers/swapFairyHandler";
 
 dotenv.config();
 
-// Sync the models with the database
 sequelize.sync({ force: false }).then(() => {
   console.log("Database synchronized");
 });
