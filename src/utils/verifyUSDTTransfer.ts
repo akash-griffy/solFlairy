@@ -40,6 +40,8 @@ export interface TransferDetails {
   
     const transferEvent = transferDetails.tokenTransfers[0];
   
+
+    console.log(transferEvent)
     if (
       transferEvent.toUserAccount.toLowerCase() !==
       process.env.COMPANY_WALLET_ADDRESS?.toLowerCase()
