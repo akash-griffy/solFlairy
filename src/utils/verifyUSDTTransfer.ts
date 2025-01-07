@@ -17,6 +17,7 @@ export interface TransferDetails {
   
   export interface ValidationResult {
     isValid: boolean;
+    message?: string;
     details?: {
       fromUser: string;
       tokenAmount: number;
@@ -29,11 +30,8 @@ export interface TransferDetails {
   export const verifyUSDTTransfer = (
     transferDetails: TransferDetails
   ): ValidationResult => {
-
-    console.log(JSON.stringify(transferDetails))
-
     if (!transferDetails.tokenTransfers || transferDetails.tokenTransfers.length === 0) {
-      return { isValid: false };
+      return { isValid: false, message: "No token transfer events found in the transaction details." };
     }
   
     const transferEvent = transferDetails.tokenTransfers[0];
@@ -42,14 +40,14 @@ export interface TransferDetails {
       transferEvent.toUserAccount.toLowerCase() !==
       process.env.COMPANY_WALLET_ADDRESS?.toLowerCase()
     ) {
-      return { isValid: false };
+      return { isValid: false, message: "Recipient address does not match the company's wallet address." };
     }
   
     if (
       transferEvent.mint.toLowerCase() !==
       process.env.SOLANA_USDT_ADDRESS?.toLowerCase()
     ) {
-      return { isValid: false };
+      return { isValid: false, message: "Token mint address does not match the expected USDT address." };
     }
   
     const expectedDescription =
@@ -58,7 +56,7 @@ export interface TransferDetails {
       `${transferEvent.toUserAccount}.`;
   
     if (expectedDescription !== transferDetails.description) {
-      return { isValid: false };
+      return { isValid: false, message: "Transaction description does not match the expected format." };
     }
   
     return {

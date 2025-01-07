@@ -15,7 +15,7 @@ export const swapFairyHandler = async (req: Request, res: Response) => {
       // Step 1: Set Solana Account Address and USDT Amount
       const validationResult = verifyUSDTTransfer(req.body[0])
       if(!validationResult.isValid){
-        console.log("Invalid solana transaction")
+        console.log("Invalid solana transaction. message : ",validationResult.message)
         return res.status(400).json({"message":"Bad Request"})
       }
       //following is mock data:
