@@ -4,6 +4,7 @@ import express, {
 import * as dotenv from "dotenv";
 import sequelize from "./src/db/connection";
 import { swapFairyHandler } from "./src/routeHandlers/swapFairyHandler";
+import { authMiddleware } from "./src/middleware/authMiddleware";
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 
 
 
-app.post("/swap-fairy", swapFairyHandler);
+app.post("/swap-fairy",authMiddleware ,swapFairyHandler);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
