@@ -98,7 +98,7 @@ export const swapFairyHandler = async (req: Request, res: Response) => {
 
     //step 4 : transfer fairy to users predicate account
 
-    const fairyWithGasDeducted = (buyAmountWithSlippage.toNumber()/usdtAmount) * 100000
+    const fairyWithGasDeducted = (buyAmountWithSlippage.toNumber() - ((buyAmountWithSlippage.toNumber()/usdtAmount) * 100000))
 
     const fairyTransferTxn = await wallet.createTransfer(
       userPredicateAddress,
