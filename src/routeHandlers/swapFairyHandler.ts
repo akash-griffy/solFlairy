@@ -98,13 +98,17 @@ export const swapFairyHandler = async (req: Request, res: Response) => {
 
     //step 4 : transfer fairy to users predicate account
 
+    const fairyWithGasDeducted = (buyAmountWithSlippage.toNumber()/usdtAmount) * 100000
+
     const fairyTransferTxn = await wallet.createTransfer(
       userPredicateAddress,
-      buyAmountWithSlippage,
+      fairyWithGasDeducted,
       FUEL_FAIRY.bits
     );
 
-    const txn2 = await wallet.sendTransaction(fairyTransferTxn);
+    const txnWithEthTopup = wallet.addTransfer(fairyTransferTxn,{destination:userPredicateAddress,amount:9999,assetId:provider.getBaseAssetId()})
+
+    const txn2 = await wallet.sendTransaction(txnWithEthTopup);
     const txn2Result = await txn2.waitForResult();
 
     if (txn2Result.status) {
